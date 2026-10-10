@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Mobile-first viewport with safe-area support for notched phones -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>90-Day Discipline Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== APP SHELL ===== -->
+  <div id="app">
+
+    <!-- TOP HEADER -->
+    <header class="app-header">
+      <h1 class="app-title">90-Day Discipline Tracker</h1>
+      <p class="app-subtitle" id="dayLabel">Loading…</p>
+    </header>
+
+    <!-- TAB BAR -->
+    <nav class="tab-bar" role="tablist" aria-label="Main navigation">
+      <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="screen-today"   data-tab="today"   id="tab-today">Today</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="screen-grid"    data-tab="grid"    id="tab-grid">90 Days</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="screen-review"  data-tab="review"  id="tab-review">Review</button>
+    </nav>
+
+    <!-- ===== SCREEN 1 – TODAY ===== -->
+    <section id="screen-today" class="screen active" role="tabpanel" aria-labelledby="tab-today">
+
+      <!-- Stat cards row -->
+      <div class="stat-row">
+        <div class="stat-card">
+          <span class="stat-value" id="statStreak">0</span>
+          <span class="stat-label">Streak 🔥</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="statAvg">0/16</span>
+          <span class="stat-label">Avg Score</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="statGreat">0</span>
+          <span class="stat-label">Great Days ⭐</span>
+        </div>
+      </div>
+
+      <!-- Day navigator -->
+      <div class="day-nav card">
+        <button class="nav-btn" id="btnPrevDay" aria-label="Previous day">&#8249;</button>
+        <div class="day-nav-info">
+          <span class="day-nav-title" id="navDayTitle">Day 1</span>
+          <span class="day-nav-score" id="navDayScore">0 / 16</span>
+        </div>
+        <button class="nav-btn" id="btnNextDay" aria-label="Next day">&#8250;</button>
+      </div>
+
+      <!-- Progress bar + message -->
+      <div class="card progress-card">
+        <div class="progress-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0" id="progressBar">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-msg" id="progressMsg">Check off your habits below.</p>
+      </div>
+
+      <!-- Habit groups — injected by JS -->
+      <div id="habitGroups"></div>
+
+      <!-- Today Numbers card -->
+      <div class="card numbers-card">
+        <h3 class="card-title">Today's Numbers</h3>
+        <div class="number-inputs">
+          <label class="number-label" for="inputOutreach">
+            <span>Outreach messages sent</span>
+            <input class="number-input" type="number" id="inputOutreach" min="0" placeholder="0" />
+          </label>
+          <label class="number-label" for="inputProposals">
+            <span>Upwork proposals sent</span>
+            <input class="number-input" type="number" id="inputProposals" min="0" placeholder="0" />
+          </label>
+        </div>
+      </div>
+
+    </section><!-- /screen-today -->
+
+    <!-- ===== SCREEN 2 – 90 DAYS ===== -->
+    <section id="screen-grid" class="screen" role="tabpanel" aria-labelledby="tab-grid" hidden>
+
+      <!-- 90-cell grid — injected by JS -->
+      <div class="card grid-card">
+        <h3 class="card-title">90-Day Overview</h3>
+        <div class="day-grid" id="dayGrid"></div>
+        <!-- Legend -->
+        <div class="grid-legend">
+          <span class="legend-dot green"></span><span>Great (13+)</span>
+          <span class="legend-dot amber"></span><span>Good (8–12)</span>
+          <span class="legend-dot red"></span><span>Missed (&lt;8)</span>
+          <span class="legend-dot neutral"></span><span>Future</span>
+        </div>
+      </div>
+
+      <!-- Totals card -->
+      <div class="card totals-card">
+        <h3 class="card-title">Challenge Totals</h3>
+        <div class="totals-row">
+          <div class="total-item">
+            <span class="total-value" id="totalOutreach">0</span>
+            <span class="total-label">Outreach sent</span>
+          </div>
+          <div class="total-item">
+            <span class="total-value" id="totalProposals">0</span>
+            <span class="total-label">Proposals sent</span>
+          </div>
+        </div>
+        <label class="number-label income-label" for="inputIncome">
+          <span>Total website income (Birr)</span>
+          <input class="number-input" type="number" id="inputIncome" min="0" placeholder="0" />
+        </label>
+      </div>
+
+    </section><!-- /screen-grid -->
+
+    <!-- ===== SCREEN 3 – REVIEW ===== -->
+    <section id="screen-review" class="screen" role="tabpanel" aria-labelledby="tab-review" hidden>
+
+      <!-- Week navigator -->
+      <div class="day-nav card">
+        <button class="nav-btn" id="btnPrevWeek" aria-label="Previous week">&#8249;</button>
+        <div class="day-nav-info">
+          <span class="day-nav-title" id="navWeekTitle">Week 1</span>
+          <span class="day-nav-score" id="navWeekAvg">Avg: —</span>
+        </div>
+        <button class="nav-btn" id="btnNextWeek" aria-label="Next week">&#8250;</button>
+      </div>
+
+      <!-- Sunday review textarea -->
+      <div class="card review-card">
+        <h3 class="card-title">Sunday Review</h3>
+        <textarea
+          id="weekReview"
+          class="review-textarea"
+          rows="8"
+          placeholder="Best habit this week?&#10;Most missed habit and why?&#10;One change for next week?"
+        ></textarea>
+        <p class="review-hint">Saved automatically as you type.</p>
+      </div>
+
+      <!-- Settings card -->
+      <div class="card settings-card">
+        <h3 class="card-title">Settings</h3>
+        <label class="number-label" for="inputStartDate">
+          <span>Challenge start date</span>
+          <input type="date" id="inputStartDate" class="number-input" />
+        </label>
+        <button class="reset-btn" id="btnReset">Reset All Data</button>
+      </div>
+
+    </section><!-- /screen-review -->
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>Never miss twice. Discipline over motivation.</p>
+    </footer>
+
+  </div><!-- /app -->
+
+  <script src="script.js"></script>
+</body>
+</html>
